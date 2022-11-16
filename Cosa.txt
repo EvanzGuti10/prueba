@@ -1,0 +1,59 @@
+//PROYECTO: CONTROL DE MOTOR PASO A PASO - LCD
+sbit LCD_RS at RD2_bit;
+sbit LCD_EN at RD3_bit;
+sbit LCD_D4 at RD4_bit;
+sbit LCD_D5 at RD5_bit;
+sbit LCD_D6 at RD6_bit;
+sbit LCD_D7 at RD7_bit;
+sbit LCD_RS_Direction at TRISD2_bit;
+sbit LCD_EN_Direction at TRISD3_bit;
+sbit LCD_D4_Direction at TRISD4_bit;
+sbit LCD_D5_Direction at TRISD5_bit;
+sbit LCD_D6_Direction at TRISD6_bit;
+sbit LCD_D7_Direction at TRISD7_bit;
+char paso_4;
+char control=0;
+void main() {
+ADCON1=14;
+TRISB=0b11110000; //// dec   hex
+Lcd_Init();
+Lcd_Cmd(_LCD_CURSOR_OFF);
+Lcd_Out(1,1,"UPEA ING. DE CONTROL");
+Lcd_Out(2,1,"DOC. GREGORIO M.");
+Lcd_Out(3,1," MOTOR PASO A PASO  ");
+Lcd_Out(4,1,"CONFIGURANDO...");
+delay_ms(1000);
+  while(1)
+  {
+    if(control<=50){    // 50X4 = 200
+      Lcd_Out(4,1,"GIRO HACIA IZQUIERDA");
+      LATB=0x01;  // 0000       0001     1
+      delay_ms(30);
+      LATB=0x02;    // 0000     0010     2
+      delay_ms(30);
+      LATB=0x04;    // 0000     0100      4
+      delay_ms(30);
+      LATB=0x08;     // 0000    1000      8
+      delay_ms(30);
+      control++;
+      }
+          if(control>=51){    // 50X4 = 200
+          Lcd_Out(4,1,"GIRO HACIA DERECHA  ");
+      LATB=0x08;  // 0000       0001     1
+      delay_ms(30);
+      LATB=0x04;    // 0000     0010     2
+      delay_ms(30);
+      LATB=0x02;    // 0000     0100      4
+      delay_ms(30);
+      LATB=0x01;     // 0000    1000      8
+      delay_ms(30);
+      control++;
+      }
+           if(control==101){    // 50X4 = 200
+
+      control=0;
+      }
+      
+      
+   }
+}
